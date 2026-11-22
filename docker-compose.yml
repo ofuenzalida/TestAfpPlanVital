@@ -25,6 +25,8 @@ services:
         condition: service_healthy
     environment:
       MSSQL_SA_PASSWORD: "${SA_PASSWORD:-FinPerf_Dev_2026!}"
+      # 1 = autoriza eliminar y recargar una base en estado ambiguo (ver init.sh)
+      FINPERF_RECREATE: "${FINPERF_RECREATE:-0}"
     volumes:
       - ./db:/scripts:ro
     entrypoint: ["/bin/bash", "/scripts/init.sh"]

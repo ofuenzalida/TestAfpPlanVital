@@ -23,7 +23,7 @@ docker compose up -d          # SQL Server + carga de datos + migraciones
 docker compose logs -f db-init db-migrate
 ```
 
-La primera vez, `db-init` genera las ~5,2 millones de filas (tarda varios minutos) y después `db-migrate` aplica `db/migrations/` en orden. Si la carga se interrumpe, el siguiente arranque lo detecta (la carga se marca como completa solo al final) y la rehace. La contraseña de `sa` se toma de la variable `SA_PASSWORD` (por defecto la del `docker-compose.yml` entregado, solo para desarrollo).
+La primera vez, `db-init` genera las ~5,2 millones de filas (tarda varios minutos) y después `db-migrate` aplica `db/migrations/` en orden. Si la carga se interrumpe, el siguiente arranque lo detecta (la carga se marca como completa solo al final) y la rehace. Si encuentra una base sin esa marca que no es claramente una carga a medias (por ejemplo, con más filas de las esperadas o con otras tablas), no la borra: se detiene y explica el estado. Para recrearla igual: `FINPERF_RECREATE=1 docker compose up db-init`. La contraseña de `sa` se toma de la variable `SA_PASSWORD` (por defecto la del `docker-compose.yml` entregado, solo para desarrollo).
 
 Para medir el "antes" y el "después" (ver `docs/sql-diagnostico.md`):
 
