@@ -124,11 +124,18 @@ Fechas en formato `yyyy-MM-dd`. Los retornos van como fracción (`0.0241` = 2,41
 
 ## Tiempo invertido
 
-| Parte | Tiempo aproximado |
-|---|---|
-| Parte 1: SQL | _completar_ |
-| Parte 2: API | _completar_ |
-| Parte 3: Pantalla | _completar_ |
-| README y documentación | _completar_ |
+El desarrollo lo hizo un asistente de IA (Claude) bajo la dirección de Octavio, como permite la prueba. Los tiempos son de reloj, el 22-11-2026 (hora de Chile), tomados de las horas de los commits y de los mensajes de trabajo. No hay otro registro más fino. Son mucho menores que las 3,5 horas estimadas porque el asistente escribe y ejecuta el código directamente; no reflejan el tiempo que le tomaría a una persona.
 
-Se usaron asistentes de IA durante el desarrollo, como permite la prueba.
+| Parte | Tramo | Tiempo aproximado |
+|---|---|---|
+| Preparación (lectura del enunciado, repositorio) | 13:39 a 13:40 | 1 min |
+| Parte 1: SQL (diagnóstico, migraciones, valores esperados) | 13:40 a 13:45 | 5 min |
+| Parte 1: mediciones reales en Docker | 14:03 a 14:13 | 10 min |
+| Parte 2: API y tests | 13:45 a 13:50 | 5 min |
+| Parte 3: Pantalla y tests | 13:50 a 13:53 | 3 min |
+| README y documentación | 13:53 a 13:54 | 1 min |
+| Correcciones de la primera revisión (006, init, planes, comparación) | 16:58 a 17:19 | 21 min |
+| Corrección de la segunda revisión (init ambiguo) | 17:24 a 17:35 | 11 min |
+| **Total** | | **~57 min** |
+
+Entre las 13:54 y las 14:03 se esperó a que se instalara Docker, y entre las 14:13 y las 16:58, la revisión del código. Esos tramos no se cuentan.
