@@ -23,7 +23,7 @@ docker compose up -d          # SQL Server + carga de datos + migraciones
 docker compose logs -f db-init db-migrate
 ```
 
-La primera vez, `db-init` genera las ~5,2 millones de filas (tarda varios minutos) y después `db-migrate` aplica `db/migrations/` en orden. La contraseña de `sa` se toma de la variable `SA_PASSWORD` (por defecto la del `docker-compose.yml` entregado, solo para desarrollo).
+La primera vez, `db-init` genera las ~5,2 millones de filas (tarda varios minutos) y después `db-migrate` aplica `db/migrations/` en orden. Si la carga se interrumpe, el siguiente arranque lo detecta (la carga se marca como completa solo al final) y la rehace. La contraseña de `sa` se toma de la variable `SA_PASSWORD` (por defecto la del `docker-compose.yml` entregado, solo para desarrollo).
 
 Para medir el "antes" y el "después" (ver `docs/sql-diagnostico.md`):
 
@@ -62,11 +62,14 @@ npm run dev        # http://localhost:5173 (redirige /api a http://localhost:508
 ### Tests
 
 ```bash
-dotnet test        # dominio (casos de control) + integración con WebApplicationFactory
-cd web && npm test # formato es-CL, manejo de errores y grilla mensual
+dotnet test          # dominio (casos de control) + integración con WebApplicationFactory
+cd web && npm test   # formato es-CL, manejo de errores y grilla mensual
+scripts/test-sql.sh  # tests SQL contra la base del docker-compose (pérdida total)
 ```
 
-Los tests no necesitan SQL Server: los de integración reemplazan el repositorio por uno en memoria.
+`dotnet test` necesita el SDK de .NET 8 (`global.json` lo exige; con el SDK 6 no compila). Los tests .NET y web no necesitan SQL Server: los de integración reemplazan el repositorio por uno en memoria.
+
+Con la base levantada, `scripts/medir.sh antes|despues|comparacion` y `scripts/planes.sh` regeneran las mediciones y los planes de ejecución de `docs/mediciones/`.
 
 ## Endpoints
 
@@ -107,6 +110,7 @@ Fechas en formato `yyyy-MM-dd`. Los retornos van como fracción (`0.0241` = 2,41
 - Los periodos (MTD, QTD, YTD) empiezan como muy temprano en la fecha de inicio del portafolio; ITD empieza en esa fecha.
 - "Fechas dentro del rango con datos" se interpreta como: `from`, `to` y `asOf` entre el primer y el último día con datos del portafolio.
 - Un día con valor inicial total 0 no tiene retorno definido y no aporta a la composición (su P&L sí se suma).
+- Un día con retorno de −100 % o menos es una pérdida total: el acumulado de cualquier periodo que lo contenga es −100 %.
 - En la tabla mensual, los meses de los extremos se recortan al rango pedido; la pantalla pide desde el primer día con datos hasta la fecha de corte.
 
 ## Pendiente y qué haría con más tiempo

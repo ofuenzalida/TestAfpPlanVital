@@ -1,28 +1,32 @@
 Changed database context to 'FinPerf'.
 DBCC execution completed. If DBCC printed error messages, contact your system administrator.
 SQL Server parse and compile time: 
-   CPU time = 319 ms, elapsed time = 366 ms.
+   CPU time = 4 ms, elapsed time = 4 ms.
 == (a) Resumen MTD/QTD/YTD/ITD, portafolio 7, corte 2023-08-15 (fría)
 
  SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
+   CPU time = 2 ms,  elapsed time = 1 ms.
+SQL Server parse and compile time: 
+   CPU time = 348 ms, elapsed time = 355 ms.
 Period|FromDate|ToDate|DaysWithData|Return|PnL
 ------|--------|------|------------|------|---
 MTD|2023-08-01|2023-08-15|11|1.953150700458206E-3|106817.8746
 QTD|2023-07-01|2023-08-15|32|5.6540530246036447E-3|299911.4538
 YTD|2023-01-01|2023-08-15|162|2.4133365198945933E-2|1343330.9513
 ITD|2015-01-01|2023-08-15|2249|0.53049183150963808|23613371.9693
-Table 'PortfolioDaily'. Scan count 8, logical reads 24, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
-Table 'Portfolio'. Scan count 0, logical reads 2, physical reads 1, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'PortfolioDaily'. Scan count 8, logical reads 24, physical reads 3, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'Portfolio'. Scan count 0, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 26 ms,  elapsed time = 26 ms.
+   CPU time = 36 ms,  elapsed time = 44 ms.
 SQL Server parse and compile time: 
-   CPU time = 14 ms, elapsed time = 14 ms.
+   CPU time = 1 ms, elapsed time = 1 ms.
 == (a) Resumen (caliente)
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 35 ms, elapsed time = 35 ms.
 Period|FromDate|ToDate|DaysWithData|Return|PnL
 ------|--------|------|------------|------|---
 MTD|2023-08-01|2023-08-15|11|1.953150700458206E-3|106817.8746
@@ -35,24 +39,28 @@ Table 'Portfolio'. Scan count 0, logical reads 2, physical reads 0, page server 
  SQL Server Execution Times:
    CPU time = 1 ms,  elapsed time = 1 ms.
 SQL Server parse and compile time: 
-   CPU time = 5 ms, elapsed time = 5 ms.
+   CPU time = 1 ms, elapsed time = 1 ms.
 == (b) Rango 2018-03-01 a 2023-08-15
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 12 ms, elapsed time = 12 ms.
 FirstDataDate|LastDataDate|DaysWithData|Return|PnL
 -------------|------------|------------|------|---
 2018-03-01|2023-08-15|1424|0.35584160381112517|16965579.7430
-Table 'PortfolioDaily'. Scan count 3, logical reads 9, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'PortfolioDaily'. Scan count 3, logical reads 9, physical reads 1, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 0 ms,  elapsed time = 0 ms.
+   CPU time = 1 ms,  elapsed time = 1 ms.
 SQL Server parse and compile time: 
-   CPU time = 9 ms, elapsed time = 9 ms.
+   CPU time = 1 ms, elapsed time = 1 ms.
 == (c) Mensual 2015-01-01 a 2024-12-31 (120 meses)
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 26 ms, elapsed time = 26 ms.
 Year|Month|DaysWithData|Return|PnL
 ----|-----|------------|------|---
 2015|1|22|2.4045121762594768E-3|133082.8744
@@ -177,18 +185,18 @@ Year|Month|DaysWithData|Return|PnL
 2024|12|22|-5.0816703820566467E-4|-31882.7137
 Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 Table 'Workfile'. Scan count 0, logical reads 0, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
-Table 'PortfolioDaily'. Scan count 1, logical reads 34, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'PortfolioDaily'. Scan count 1, logical reads 34, physical reads 0, page server reads 0, read-ahead reads 19, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 13 ms,  elapsed time = 13 ms.
+   CPU time = 52 ms,  elapsed time = 56 ms.
 SQL Server parse and compile time: 
-   CPU time = 0 ms, elapsed time = 0 ms.
-== usp_GetPerformance nuevo, @PortfolioId = 7, @Year = 2023
+   CPU time = 11 ms, elapsed time = 12 ms.
+== usp_GetPerformance nuevo, @PortfolioId = 7, @Year = 2023 (primera ejecución)
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
 SQL Server parse and compile time: 
-   CPU time = 17 ms, elapsed time = 17 ms.
+   CPU time = 0 ms, elapsed time = 0 ms.
 
  SQL Server Execution Times:
    CPU time = 0 ms,  elapsed time = 0 ms.
@@ -213,17 +221,60 @@ Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, page server 
 Table 'PortfolioDaily'. Scan count 1, logical reads 7, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 4 ms,  elapsed time = 3 ms.
+   CPU time = 12 ms,  elapsed time = 11 ms.
 RetornoYTD|PnLYTD
 ----------|------
 5.3264159849882198E-2|2856350.8692
 Table 'PortfolioDaily'. Scan count 2, logical reads 6, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
 
  SQL Server Execution Times:
-   CPU time = 1 ms,  elapsed time = 0 ms.
+   CPU time = 0 ms,  elapsed time = 0 ms.
 
  SQL Server Execution Times:
-   CPU time = 22 ms,  elapsed time = 21 ms.
+   CPU time = 13 ms,  elapsed time = 12 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+== usp_GetPerformance nuevo (caliente, ejecución completa)
+
+ SQL Server Execution Times:
+   CPU time = 1 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Mes|RetornoMes|PnLMes
+---|----------|------
+1|-3.8953290719434541E-4|-23804.8236
+2|4.5035370440169586E-3|264616.5096
+3|9.9377057452973983E-3|565572.2851
+4|-4.3545055021021462E-4|-23196.7141
+5|4.6290155572981107E-4|26622.3058
+6|4.1976962702301446E-3|233609.9347
+7|3.6936879948510359E-3|193093.5792
+8|2.2626639430747275E-3|134868.4246
+9|4.1370261097126715E-3|223175.5429
+10|6.4759544588133267E-4|19872.7741
+11|1.0277951856230372E-2|582990.8307
+12|1.2818537158451937E-2|658930.2202
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'PortfolioDaily'. Scan count 1, logical reads 7, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 22 ms,  elapsed time = 22 ms.
+RetornoYTD|PnLYTD
+----------|------
+5.3264159849882198E-2|2856350.8692
+Table 'PortfolioDaily'. Scan count 2, logical reads 6, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 22 ms,  elapsed time = 22 ms.
 SQL Server parse and compile time: 
    CPU time = 0 ms, elapsed time = 0 ms.
 == Control: acumulado O(1) vs composición día a día (2023)

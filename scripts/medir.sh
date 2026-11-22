@@ -8,7 +8,8 @@ cd "$(dirname "$0")/.."
 case "${1:-}" in
   antes)   file=01_antes.sql ;;
   despues) file=02_despues.sql ;;
-  *) echo "Uso: $0 antes|despues" >&2; exit 1 ;;
+  comparacion) file=04_comparacion.sql ;;
+  *) echo "Uso: $0 antes|despues|comparacion" >&2; exit 1 ;;
 esac
 
 mkdir -p docs/mediciones

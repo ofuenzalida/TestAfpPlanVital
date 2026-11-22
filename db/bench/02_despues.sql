@@ -33,7 +33,13 @@ FROM dbo.tvf_PerformanceMonthly(7, '2015-01-01', '2024-12-31')
 ORDER BY [Year], [Month];
 GO
 
-PRINT '== usp_GetPerformance nuevo, @PortfolioId = 7, @Year = 2023';
+PRINT '== usp_GetPerformance nuevo, @PortfolioId = 7, @Year = 2023 (primera ejecución)';
+EXEC dbo.usp_GetPerformance @PortfolioId = 7, @Year = 2023;
+GO
+
+-- Mismo criterio que la medición "Caliente" de 01_antes.sql: la línea
+-- "SQL Server Execution Times" que sigue al EXEC es el total del procedimiento.
+PRINT '== usp_GetPerformance nuevo (caliente, ejecución completa)';
 EXEC dbo.usp_GetPerformance @PortfolioId = 7, @Year = 2023;
 GO
 
