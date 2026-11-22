@@ -1,1 +1,0 @@
-{"root":["./src/app.tsx","./src/format.test.ts","./src/format.ts","./src/main.tsx","./src/monthlygrid.ts","./src/api/client.test.ts","./src/api/client.ts","./src/api/types.ts","./src/components/filters.tsx","./src/components/monthlytable.tsx","./src/components/statusmessage.tsx","./src/components/summarytable.tsx","./src/hooks/useapi.ts","./vite.config.ts"],"version":"5.9.3"}
