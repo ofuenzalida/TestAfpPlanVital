@@ -1,0 +1,18 @@
+@api = http://localhost:5080
+
+GET {{api}}/api/portfolios
+
+###
+GET {{api}}/api/portfolios/7/performance/summary?asOf=2023-08-15
+
+###
+GET {{api}}/api/portfolios/7/performance?from=2023-01-01&to=2023-12-31
+
+###
+GET {{api}}/api/portfolios/7/performance/monthly?from=2022-01-01&to=2023-08-15
+
+### 400: from > to
+GET {{api}}/api/portfolios/7/performance?from=2023-12-31&to=2023-01-01
+
+### 404: portafolio inexistente
+GET {{api}}/api/portfolios/999/performance?from=2023-01-01&to=2023-12-31
