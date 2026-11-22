@@ -30,6 +30,7 @@ public sealed record PeriodRow(
     DateOnly? FirstDataDate,
     DateOnly? LastDataDate,
     int DaysWithData,
+    int TotalLossDays,
     double? SumLogReturn,
     decimal? PnL);
 
@@ -39,6 +40,7 @@ public sealed record RangeRow(
     DateOnly? FirstDataDate,
     DateOnly? LastDataDate,
     int DaysWithData,
+    int TotalLossDays,
     double? SumLogReturn,
     decimal? PnL);
 
@@ -48,5 +50,6 @@ public sealed record MonthRow(
     DateOnly FirstDataDate,
     DateOnly LastDataDate,
     int DaysWithData,
+    int TotalLossDays,
     double SumLogReturn,
     decimal PnL);

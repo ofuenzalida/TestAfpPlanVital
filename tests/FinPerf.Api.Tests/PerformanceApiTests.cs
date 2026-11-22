@@ -95,6 +95,7 @@ public class PerformanceApiTests(PerformanceApiTests.ApiFactory factory) : IClas
         Assert.Equal(["MTD", "QTD", "YTD", "ITD"], body!.Periods.Select(p => p.Period));
         Assert.Equal(-0.01, body.Periods[0].Return!.Value, 12);
         Assert.Null(body.Periods[1].Return); // periodo sin días con datos
+        Assert.Equal(-1.0, body.Periods[2].Return!.Value); // [-100 %, +10 %] = -100 %
     }
 
     [Fact]
@@ -136,21 +137,21 @@ public class PerformanceApiTests(PerformanceApiTests.ApiFactory factory) : IClas
         public Task<IReadOnlyList<PeriodRow>> GetSummaryAsync(int portfolioId, DateOnly asOf, CancellationToken ct) =>
             Task.FromResult<IReadOnlyList<PeriodRow>>(
             [
-                new("MTD", asOf, asOf, asOf, asOf, 2, Math.Log(1.10) + Math.Log(0.90), 10m),
-                new("QTD", asOf, asOf, null, null, 0, null, null),
-                new("YTD", asOf, asOf, asOf, asOf, 1, Math.Log(1.05), 5m),
-                new("ITD", First, asOf, First, asOf, 1, Math.Log(1.05), 5m),
+                new("MTD", asOf, asOf, asOf, asOf, 2, 0, Math.Log(1.10) + Math.Log(0.90), 10m),
+                new("QTD", asOf, asOf, null, null, 0, 0, null, null),
+                new("YTD", asOf, asOf, asOf, asOf, 2, 1, Math.Log(1.10), -95m),
+                new("ITD", First, asOf, First, asOf, 1, 0, Math.Log(1.05), 5m),
             ]);
 
         public Task<RangeRow> GetRangeAsync(int portfolioId, DateOnly from, DateOnly to, CancellationToken ct) =>
-            Task.FromResult(new RangeRow(from, to, from, to, 3, Math.Log(1.0395), 1_234.5m));
+            Task.FromResult(new RangeRow(from, to, from, to, 3, 0, Math.Log(1.0395), 1_234.5m));
 
         public Task<IReadOnlyList<MonthRow>> GetMonthlyAsync(int portfolioId, DateOnly from, DateOnly to, CancellationToken ct) =>
             Task.FromResult<IReadOnlyList<MonthRow>>(
             [
-                new(2023, 1, new(2023, 1, 2), new(2023, 1, 31), 22, Math.Log(1.10), 10m),
-                new(2023, 2, new(2023, 2, 1), new(2023, 2, 28), 20, Math.Log(0.90), 20m),
-                new(2023, 3, new(2023, 3, 1), new(2023, 3, 31), 23, Math.Log(1.05), 30m),
+                new(2023, 1, new(2023, 1, 2), new(2023, 1, 31), 22, 0, Math.Log(1.10), 10m),
+                new(2023, 2, new(2023, 2, 1), new(2023, 2, 28), 20, 0, Math.Log(0.90), 20m),
+                new(2023, 3, new(2023, 3, 1), new(2023, 3, 31), 23, 0, Math.Log(1.05), 30m),
             ]);
     }
 }

@@ -90,6 +90,29 @@ public class CompoundingTests
         Assert.Equal(0.0395, result, Precision);
     }
 
+    // Pérdida total (r = -100 %): no tiene logaritmo y anula el producto.
+
+    [Theory]
+    [InlineData(new[] { -1.0, 0.10 })]
+    [InlineData(new[] { 0.10, -1.0 })]
+    [InlineData(new[] { 0.05, -1.0, 0.10, 0.20 })]
+    [InlineData(new[] { -1.5, 0.10 })]
+    public void Compound_ConPerdidaTotal_DaMenosCienPorCiento(double[] returns)
+    {
+        Assert.Equal(-1.0, Compounding.Compound(returns));
+    }
+
+    [Fact]
+    public void FromLogGrowth_ConDiasDePerdidaTotal_DaMenosCienPorCiento()
+    {
+        // [-100 %, +10 %]: el -100 % no entra en la suma de logaritmos (no existe)
+        // y se informa como un día de pérdida total.
+        var sumOfLogs = Compounding.ToLogGrowth(0.10);
+
+        Assert.Equal(-1.0, Compounding.FromLogGrowth(sumOfLogs, totalLossDays: 1));
+        Assert.Equal(0.10, Compounding.FromLogGrowth(sumOfLogs, totalLossDays: 0), Precision);
+    }
+
     // Bordes.
 
     [Fact]

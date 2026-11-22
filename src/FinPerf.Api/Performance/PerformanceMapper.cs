@@ -12,18 +12,18 @@ public static class PerformanceMapper
 {
     public static PerformanceResponse ToResponse(RangeRow r) => new(
         r.FromDate, r.ToDate, r.FirstDataDate, r.LastDataDate, r.DaysWithData,
-        ReturnOf(r.DaysWithData, r.SumLogReturn), PnLOf(r.DaysWithData, r.PnL));
+        ReturnOf(r.DaysWithData, r.TotalLossDays, r.SumLogReturn), PnLOf(r.DaysWithData, r.PnL));
 
     public static PeriodPerformanceResponse ToResponse(PeriodRow r) => new(
         r.Period, r.FromDate, r.ToDate, r.FirstDataDate, r.LastDataDate, r.DaysWithData,
-        ReturnOf(r.DaysWithData, r.SumLogReturn), PnLOf(r.DaysWithData, r.PnL));
+        ReturnOf(r.DaysWithData, r.TotalLossDays, r.SumLogReturn), PnLOf(r.DaysWithData, r.PnL));
 
     public static MonthlyResponse ToResponse(int portfolioId, DateOnly from, DateOnly to, IReadOnlyList<MonthRow> rows)
     {
         var months = rows
             .Select(m => new MonthPerformanceResponse(
                 m.Year, m.Month, m.FirstDataDate, m.LastDataDate, m.DaysWithData,
-                Compounding.FromLogGrowth(m.SumLogReturn), m.PnL))
+                Compounding.FromLogGrowth(m.SumLogReturn, m.TotalLossDays), m.PnL))
             .ToList();
 
         // Retorno anual = composición de los retornos mensuales (idea 4).
@@ -39,8 +39,8 @@ public static class PerformanceMapper
         return new MonthlyResponse(portfolioId, from, to, months, years);
     }
 
-    private static double? ReturnOf(int days, double? sumLog) =>
-        days == 0 || sumLog is null ? null : Compounding.FromLogGrowth(sumLog.Value);
+    private static double? ReturnOf(int days, int totalLossDays, double? sumLog) =>
+        days == 0 || sumLog is null ? null : Compounding.FromLogGrowth(sumLog.Value, totalLossDays);
 
     private static decimal? PnLOf(int days, decimal? pnl) => days == 0 ? null : pnl;
 }

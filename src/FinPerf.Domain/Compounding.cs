@@ -30,6 +30,9 @@ public static class Compounding
     /// <summary>
     /// Idea 4: retorno acumulado. Los retornos se multiplican:
     /// (1 + r1) × (1 + r2) × … × (1 + rn) − 1. Una secuencia vacía da 0.
+    /// Un día con r &lt;= −100 % es una pérdida total: su factor es 0 y el
+    /// acumulado queda en −100 % sin importar los días siguientes. (Un r menor
+    /// a −100 % solo es posible con apalancamiento; se trata igual.)
     /// </summary>
     public static double Compound(IEnumerable<double> returns)
     {
@@ -38,10 +41,17 @@ public static class Compounding
         var growth = 1.0;
         foreach (var r in returns)
         {
+            if (r <= TotalLoss)
+            {
+                return TotalLoss;
+            }
             growth *= 1 + r;
         }
         return growth - 1;
     }
+
+    /// <summary>Retorno de una pérdida total: −100 %.</summary>
+    public const double TotalLoss = -1.0;
 
     /// <summary>
     /// Convierte un retorno a su forma logarítmica, LOG(1 + r). En esa forma los
@@ -61,8 +71,12 @@ public static class Compounding
     /// <summary>
     /// Inversa de <see cref="ToLogGrowth"/> aplicada a una suma de logaritmos:
     /// EXP(Σ LOG(1 + r)) − 1 = retorno compuesto del periodo.
+    /// Los días con pérdida total no tienen logaritmo, así que no están en la
+    /// suma: se informan aparte en <paramref name="totalLossDays"/> y, si hay
+    /// alguno, el periodo completo es −100 %.
     /// </summary>
-    public static double FromLogGrowth(double sumOfLogGrowth) => Math.Exp(sumOfLogGrowth) - 1;
+    public static double FromLogGrowth(double sumOfLogGrowth, int totalLossDays = 0) =>
+        totalLossDays > 0 ? TotalLoss : Math.Exp(sumOfLogGrowth) - 1;
 }
 
 /// <summary>Valor inicial y P&amp;L de un instrumento en un día.</summary>

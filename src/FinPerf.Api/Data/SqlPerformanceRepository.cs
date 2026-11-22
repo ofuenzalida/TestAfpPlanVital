@@ -42,7 +42,7 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
     {
         const string sql = """
             SELECT Period, FromDate, ToDate, FirstDataDate, LastDataDate,
-                   DaysWithData, SumLogReturn, PnL
+                   DaysWithData, TotalLossDays, SumLogReturn, PnL
             FROM dbo.tvf_PerformanceSummary(@PortfolioId, @AsOf)
             ORDER BY SortOrder;
             """;
@@ -56,7 +56,7 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
         return rows.Select(r => new PeriodRow(
                 r.Period, ToDate(r.FromDate), ToDate(r.ToDate),
                 ToDate(r.FirstDataDate), ToDate(r.LastDataDate),
-                r.DaysWithData, r.SumLogReturn, r.PnL))
+                r.DaysWithData, r.TotalLossDays, r.SumLogReturn, r.PnL))
             .ToList();
     }
 
@@ -64,7 +64,7 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
     {
         const string sql = """
             SELECT FromDate, ToDate, FirstDataDate, LastDataDate,
-                   DaysWithData, SumLogReturn, PnL
+                   DaysWithData, TotalLossDays, SumLogReturn, PnL
             FROM dbo.tvf_PerformanceRange(@PortfolioId, @From, @To);
             """;
 
@@ -74,14 +74,14 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
         return new RangeRow(
             ToDate(r.FromDate), ToDate(r.ToDate),
             ToDate(r.FirstDataDate), ToDate(r.LastDataDate),
-            r.DaysWithData, r.SumLogReturn, r.PnL);
+            r.DaysWithData, r.TotalLossDays, r.SumLogReturn, r.PnL);
     }
 
     public async Task<IReadOnlyList<MonthRow>> GetMonthlyAsync(int portfolioId, DateOnly from, DateOnly to, CancellationToken ct)
     {
         const string sql = """
             SELECT [Year], [Month], FirstDataDate, LastDataDate,
-                   DaysWithData, SumLogReturn, PnL
+                   DaysWithData, TotalLossDays, SumLogReturn, PnL
             FROM dbo.tvf_PerformanceMonthly(@PortfolioId, @From, @To)
             ORDER BY [Year], [Month];
             """;
@@ -91,7 +91,7 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
             new CommandDefinition(sql, RangeParameters(portfolioId, from, to), cancellationToken: ct));
         return rows.Select(r => new MonthRow(
                 r.Year, r.Month, ToDate(r.FirstDataDate), ToDate(r.LastDataDate),
-                r.DaysWithData, r.SumLogReturn, r.PnL))
+                r.DaysWithData, r.TotalLossDays, r.SumLogReturn, r.PnL))
             .ToList();
     }
 
@@ -140,6 +140,7 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
         public DateTime? FirstDataDate { get; set; }
         public DateTime? LastDataDate { get; set; }
         public int DaysWithData { get; set; }
+        public int TotalLossDays { get; set; }
         public double? SumLogReturn { get; set; }
         public decimal? PnL { get; set; }
     }
@@ -156,6 +157,7 @@ public sealed class SqlPerformanceRepository(IOptions<DatabaseOptions> options) 
         public DateTime FirstDataDate { get; set; }
         public DateTime LastDataDate { get; set; }
         public int DaysWithData { get; set; }
+        public int TotalLossDays { get; set; }
         public double SumLogReturn { get; set; }
         public decimal PnL { get; set; }
     }
