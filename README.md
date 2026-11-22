@@ -111,7 +111,6 @@ Fechas en formato `yyyy-MM-dd`. Los retornos van como fracción (`0.0241` = 2,41
 
 ## Pendiente y qué haría con más tiempo
 
-- **Mediciones reales.** La solución se armó en una máquina sin Docker, así que las cifras de lecturas y tiempos de `docs/sql-diagnostico.md` son estimaciones. Los resultados esperados sí están verificados reproduciendo el generador de datos en Python. Falta correr `scripts/medir.sh` y pegar la salida.
 - Test de integración contra un SQL Server real (Testcontainers) que valide las funciones SQL contra `scripts/valores_esperados.py`.
 - Cambiar `AsOfDate` a `DATE` en `PositionDaily` en una ventana de mantenimiento.
 - Proceso automático de refresco: tabla de pendientes alimentada por trigger o Change Tracking y un job que llame a `usp_RefreshPortfolioDaily` e invalide la caché de la API.

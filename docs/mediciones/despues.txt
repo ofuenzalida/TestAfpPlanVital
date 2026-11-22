@@ -1,0 +1,232 @@
+Changed database context to 'FinPerf'.
+DBCC execution completed. If DBCC printed error messages, contact your system administrator.
+SQL Server parse and compile time: 
+   CPU time = 319 ms, elapsed time = 366 ms.
+== (a) Resumen MTD/QTD/YTD/ITD, portafolio 7, corte 2023-08-15 (fría)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Period|FromDate|ToDate|DaysWithData|Return|PnL
+------|--------|------|------------|------|---
+MTD|2023-08-01|2023-08-15|11|1.953150700458206E-3|106817.8746
+QTD|2023-07-01|2023-08-15|32|5.6540530246036447E-3|299911.4538
+YTD|2023-01-01|2023-08-15|162|2.4133365198945933E-2|1343330.9513
+ITD|2015-01-01|2023-08-15|2249|0.53049183150963808|23613371.9693
+Table 'PortfolioDaily'. Scan count 8, logical reads 24, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'Portfolio'. Scan count 0, logical reads 2, physical reads 1, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 26 ms,  elapsed time = 26 ms.
+SQL Server parse and compile time: 
+   CPU time = 14 ms, elapsed time = 14 ms.
+== (a) Resumen (caliente)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Period|FromDate|ToDate|DaysWithData|Return|PnL
+------|--------|------|------------|------|---
+MTD|2023-08-01|2023-08-15|11|1.953150700458206E-3|106817.8746
+QTD|2023-07-01|2023-08-15|32|5.6540530246036447E-3|299911.4538
+YTD|2023-01-01|2023-08-15|162|2.4133365198945933E-2|1343330.9513
+ITD|2015-01-01|2023-08-15|2249|0.53049183150963808|23613371.9693
+Table 'PortfolioDaily'. Scan count 8, logical reads 24, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'Portfolio'. Scan count 0, logical reads 2, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 1 ms,  elapsed time = 1 ms.
+SQL Server parse and compile time: 
+   CPU time = 5 ms, elapsed time = 5 ms.
+== (b) Rango 2018-03-01 a 2023-08-15
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+FirstDataDate|LastDataDate|DaysWithData|Return|PnL
+-------------|------------|------------|------|---
+2018-03-01|2023-08-15|1424|0.35584160381112517|16965579.7430
+Table 'PortfolioDaily'. Scan count 3, logical reads 9, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 9 ms, elapsed time = 9 ms.
+== (c) Mensual 2015-01-01 a 2024-12-31 (120 meses)
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Year|Month|DaysWithData|Return|PnL
+----|-----|------------|------|---
+2015|1|22|2.4045121762594768E-3|133082.8744
+2015|2|20|-7.2029870977947663E-3|-438068.2000
+2015|3|22|1.3303042290441214E-2|737241.9415
+2015|4|22|5.6706290881773924E-3|282858.4635
+2015|5|21|-3.6346491459853247E-3|-174207.2103
+2015|6|22|2.5375222299084399E-4|1409.3396
+2015|7|23|1.3575556074095996E-2|763025.8362
+2015|8|21|5.9464838146989774E-3|343435.8495
+2015|9|22|-4.7985819812709218E-3|-260429.2582
+2015|10|22|-3.8415368290311003E-3|-209961.4754
+2015|11|21|9.6832787777236806E-3|532009.4596
+2015|12|23|7.2785610912173837E-3|399804.3208
+2016|1|21|1.2865091411484286E-2|688594.6687
+2016|2|21|3.1138818888052366E-3|171706.3702
+2016|3|23|4.9413926964243515E-3|264494.4006
+2016|4|21|5.9549829037064406E-4|5648.6682
+2016|5|22|2.6494513467247849E-3|167619.5064
+2016|6|22|2.9832892980661274E-3|159631.4111
+2016|7|21|3.4156862228207352E-4|14430.9373
+2016|8|23|4.7448342580498348E-3|263783.9210
+2016|9|22|-5.4862616936381947E-3|-296697.9240
+2016|10|21|3.0690569279128166E-3|146543.9764
+2016|11|22|-1.9515494536881395E-4|9807.6379
+2016|12|22|6.4537742461394654E-3|350089.4947
+2017|1|22|1.0645056020002874E-2|575137.6270
+2017|2|20|8.353176016770103E-3|446587.5778
+2017|3|23|7.0316211331888923E-4|33358.9979
+2017|4|20|6.3517902043401797E-3|367818.9417
+2017|5|23|2.4509862281580919E-3|123784.6487
+2017|6|22|3.7111486000591665E-3|217841.6204
+2017|7|21|4.484417339763791E-3|258708.1561
+2017|8|23|2.5949012593118326E-3|135617.0087
+2017|9|21|-5.6665384785983264E-3|-313975.6740
+2017|10|22|8.8632932793524244E-3|468452.9860
+2017|11|22|-1.1791620349748011E-2|-650560.1858
+2017|12|21|-3.431479696045181E-3|-194041.4063
+2018|1|23|7.1023694465766063E-3|397708.1541
+2018|2|20|1.2954782830116196E-2|725498.7643
+2018|3|22|7.7949154610603699E-3|418745.8193
+2018|4|21|3.8731287989228758E-3|213170.4895
+2018|5|23|4.214129778711051E-3|230854.6801
+2018|6|21|4.167191963139194E-3|259781.7152
+2018|7|22|4.9698784262630635E-3|268002.9065
+2018|8|23|5.0264961725932089E-3|292448.6414
+2018|9|20|6.2463882913443847E-3|332278.5200
+2018|10|23|8.7293847386609169E-3|506564.1606
+2018|11|22|6.4505527688505371E-3|361917.1251
+2018|12|21|1.1352945338354958E-2|605349.7248
+2019|1|23|8.4291420427560215E-3|491409.6413
+2019|2|20|7.3670010043209722E-3|419662.5762
+2019|3|21|6.0733443002960463E-3|304533.0457
+2019|4|22|3.0658445567357528E-3|153986.2752
+2019|5|23|3.3441399895333124E-3|198776.0163
+2019|6|20|-2.4859836023293225E-3|-106138.5307
+2019|7|23|1.0103480320896585E-2|555664.4623
+2019|8|22|6.3071290731280261E-3|337946.9543
+2019|9|21|6.0342500388350651E-3|329493.3467
+2019|10|23|8.3280439970261355E-3|478430.9857
+2019|11|21|1.1018026861404628E-2|620172.9824
+2019|12|22|6.1731494002905674E-3|332792.6494
+2020|1|23|7.3265166478875265E-4|82644.0404
+2020|2|20|3.9394615490697671E-3|234366.6052
+2020|3|22|8.2466914093657362E-3|443965.1869
+2020|4|22|-3.9250714536431808E-4|-5644.4522
+2020|5|21|6.4578721453605326E-3|375205.3135
+2020|6|22|6.2294413778876123E-3|354903.9387
+2020|7|23|1.5075303684915831E-2|833571.5798
+2020|8|21|1.1232205110569327E-2|622675.6475
+2020|9|22|1.0510931970908244E-2|580526.0414
+2020|10|22|2.7161433246132294E-3|129528.6520
+2020|11|21|0.01304763650442764|682598.7420
+2020|12|23|5.1159252895616181E-3|292680.0783
+2021|1|21|4.070509599706007E-3|230793.7403
+2021|2|20|2.7824903327353656E-3|152461.8679
+2021|3|23|1.4668675864179193E-2|810833.8135
+2021|4|22|1.4950745445945213E-3|77976.3972
+2021|5|21|3.2101683649790047E-3|165869.7242
+2021|6|22|4.7377662865211168E-3|259968.4723
+2021|7|22|5.1415310938418557E-4|43760.9371
+2021|8|22|8.5578846121148189E-3|469529.5400
+2021|9|22|8.6857310247623332E-3|475035.6066
+2021|10|21|5.5995723276451859E-3|331436.2151
+2021|11|22|-6.8608960863988377E-3|-369532.9135
+2021|12|23|6.6649991827294475E-3|364590.7665
+2022|1|21|8.9826868038729302E-3|493628.0438
+2022|2|20|5.2267709197264534E-3|302589.8867
+2022|3|23|-2.7891298367218598E-3|-155648.0749
+2022|4|21|9.4572666565606589E-3|523436.5293
+2022|5|22|-2.2035928829802209E-3|-124118.6488
+2022|6|22|6.1865797527227429E-3|334040.8060
+2022|7|21|9.5369694245439618E-4|51714.3289
+2022|8|23|3.8501009012237297E-4|6075.9404
+2022|9|22|-7.2554374620535933E-3|-440228.3749
+2022|10|21|-1.2297507095853089E-3|-103966.5745
+2022|11|22|-6.0342515609232983E-3|-351129.7834
+2022|12|22|-3.3463966047099225E-3|-159735.0149
+2023|1|22|-3.8953290719434541E-4|-23804.8236
+2023|2|20|4.5035370440169586E-3|264616.5096
+2023|3|23|9.9377057452973983E-3|565572.2851
+2023|4|20|-4.3545055021021462E-4|-23196.7141
+2023|5|23|4.6290155572981107E-4|26622.3058
+2023|6|22|4.1976962702301446E-3|233609.9347
+2023|7|21|3.6936879948510359E-3|193093.5792
+2023|8|23|2.2626639430747275E-3|134868.4246
+2023|9|21|4.1370261097126715E-3|223175.5429
+2023|10|22|6.4759544588133267E-4|19872.7741
+2023|11|22|1.0277951856230372E-2|582990.8307
+2023|12|21|1.2818537158451937E-2|658930.2202
+2024|1|23|-9.3830985443366099E-4|-53310.6172
+2024|2|21|7.2006549149687959E-3|348110.9591
+2024|3|21|8.630513038789811E-3|464001.6006
+2024|4|22|8.5616055225563592E-3|461773.3709
+2024|5|23|6.4335400967283629E-3|325548.0601
+2024|6|20|1.3717226043420405E-2|723028.2356
+2024|7|23|-3.7214653533773623E-3|-219308.3752
+2024|8|22|4.7865602851149269E-4|11699.4160
+2024|9|21|3.6506967663925138E-3|215837.6163
+2024|10|23|-1.4255737884041331E-3|-90872.4867
+2024|11|21|7.3832058239140519E-3|407985.2004
+2024|12|22|-5.0816703820566467E-4|-31882.7137
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'Workfile'. Scan count 0, logical reads 0, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'PortfolioDaily'. Scan count 1, logical reads 34, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 13 ms,  elapsed time = 13 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+== usp_GetPerformance nuevo, @PortfolioId = 7, @Year = 2023
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+SQL Server parse and compile time: 
+   CPU time = 17 ms, elapsed time = 17 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 0 ms,  elapsed time = 0 ms.
+Mes|RetornoMes|PnLMes
+---|----------|------
+1|-3.8953290719434541E-4|-23804.8236
+2|4.5035370440169586E-3|264616.5096
+3|9.9377057452973983E-3|565572.2851
+4|-4.3545055021021462E-4|-23196.7141
+5|4.6290155572981107E-4|26622.3058
+6|4.1976962702301446E-3|233609.9347
+7|3.6936879948510359E-3|193093.5792
+8|2.2626639430747275E-3|134868.4246
+9|4.1370261097126715E-3|223175.5429
+10|6.4759544588133267E-4|19872.7741
+11|1.0277951856230372E-2|582990.8307
+12|1.2818537158451937E-2|658930.2202
+Table 'Worktable'. Scan count 0, logical reads 0, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+Table 'PortfolioDaily'. Scan count 1, logical reads 7, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 4 ms,  elapsed time = 3 ms.
+RetornoYTD|PnLYTD
+----------|------
+5.3264159849882198E-2|2856350.8692
+Table 'PortfolioDaily'. Scan count 2, logical reads 6, physical reads 0, page server reads 0, read-ahead reads 0, page server read-ahead reads 0, lob logical reads 0, lob physical reads 0, lob page server reads 0, lob read-ahead reads 0, lob page server read-ahead reads 0.
+
+ SQL Server Execution Times:
+   CPU time = 1 ms,  elapsed time = 0 ms.
+
+ SQL Server Execution Times:
+   CPU time = 22 ms,  elapsed time = 21 ms.
+SQL Server parse and compile time: 
+   CPU time = 0 ms, elapsed time = 0 ms.
+== Control: acumulado O(1) vs composición día a día (2023)
+RetornoPorAcumulados|RetornoDiaADia|PnLPorAcumulados|PnLDesdeHechos
+--------------------|--------------|----------------|--------------
+5.3264159849882198E-2|5.3264159849882198E-2|2856350.8692|2856350.8692

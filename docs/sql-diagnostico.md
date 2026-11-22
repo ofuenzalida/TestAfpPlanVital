@@ -2,7 +2,7 @@
 
 Este documento cubre los seis puntos de la Parte 1: la medición del procedimiento actual, los problemas que tiene, los cambios aplicados, las consultas para la API, la medición posterior y cómo se mantienen al día las estructuras pre-calculadas.
 
-> **Estado de las mediciones.** Los scripts de medición están listos (`scripts/medir.sh antes|despues`), pero todavía no se ejecutaron contra SQL Server porque la máquina donde se armó la solución no tenía Docker. Las cifras de páginas leídas de las secciones 1 y 5 son **estimaciones analíticas** a partir del tamaño de las tablas y del plan esperado, y están marcadas como tales. Las cifras de **resultados** (retornos y P&L esperados) sí son exactas: salen de reproducir el generador de datos en Python (`scripts/valores_esperados.py`), que es determinista.
+> **Entorno de medición.** SQL Server 2022 Developer en Docker (Docker Desktop sobre Mac con Apple Silicon, 8 GB asignados a Docker). La salida completa está en `docs/mediciones/antes.txt` y `docs/mediciones/despues.txt`. Los resultados coinciden al decimal con los que calcula `scripts/valores_esperados.py`, que reproduce el generador de datos en Python.
 
 ## Cómo reproducir
 
@@ -21,13 +21,18 @@ El plan de ejecución real se captura en SSMS o Azure Data Studio con *Include A
 
 Tamaño de los datos: 20 portafolios × 100 instrumentos × 2.609 días hábiles = **5.218.000 filas** en `dbo.PositionDaily`. Cada fila ocupa unos 80 bytes, así que la tabla tiene del orden de **52.000 páginas (~400 MB)**.
 
-| Medición (portafolio 7, año 2023) | Valor |
-|---|---|
-| Lecturas lógicas | *Estimado: entre ~0,3 y ~14 millones de páginas* (ver nota) |
-| Tiempo | *Pendiente de medir* |
-| Plan | Clustered Index Scan completo de `PositionDaily` en cada acceso |
+`EXEC dbo.usp_GetPerformance @PortfolioId = 7, @Year = 2023;` con `SET STATISTICS IO, TIME ON`:
 
-Nota sobre la estimación: el procedimiento recorre la tabla completa al menos 3 veces (el `DISTINCT` de días, la subconsulta de P&L por mes y el YTD), y la función escalar se evalúa una vez por día del año (260 días). Si SQL Server 2022 no logra *inlinear* la función, son 260 recorridos adicionales: 260 × 52.000 ≈ 13,5 millones de lecturas lógicas. Si la inlinea (nivel de compatibilidad 160), el optimizador puede convertirla en un join con un solo recorrido extra, y queda en el rango de 4 a 6 recorridos (~0,2 a 0,3 millones de páginas). En los dos casos cada consulta lee la tabla entera de los 20 portafolios para quedarse con el 5% de un portafolio.
+| | Caché fría | Caché caliente |
+|---|---|---|
+| Resultado 1 (por mes): tiempo | **33,6 s** (CPU 97,8 s) | **28,8 s** (CPU 85,2 s) |
+| Resultado 1: lecturas lógicas `PositionDaily` | 154.526 (23 recorridos) | 154.526 |
+| Resultado 1: lecturas lógicas `Worktable` | **16.145.550** (780 recorridos) | 16.145.550 |
+| Resultado 2 (YTD): tiempo | 2,4 s | 0,5 s |
+| Resultado 2: lecturas lógicas `PositionDaily` | 51.508 (recorrido completo) | 51.816 |
+| **Total del procedimiento** | **36,7 s** | **29,4 s** |
+
+`PositionDaily` ocupa ~51.500 páginas (~400 MB): cada lectura de 51.500 páginas es un recorrido completo de la tabla. Como antes de los cambios el único índice es la PK, todos los accesos son Clustered Index Scan, y el plan es paralelo (por eso el CPU es ~3 veces el tiempo transcurrido). La función está marcada como inlineable (`is_inlineable = 1`, nivel de compatibilidad 160), pero aun así el costo está en las tablas de trabajo: los 780 recorridos de `Worktable` (3 por cada uno de los 260 días del año) suman 16 millones de lecturas, que es lo que cuesta evaluar el retorno día por día. El plan de ejecución real se puede ver en SSMS o Azure Data Studio con *Include Actual Execution Plan*.
 
 ## 2. Problemas encontrados
 
@@ -36,8 +41,8 @@ Nota sobre la estimación: el procedimiento recorre la tabla completa al menos 3
 | # | Problema | Dónde | Efecto |
 |---|---|---|---|
 | C1 | **`RetornoYTD` suma los retornos de los instrumentos.** `SUM(DailyReturn)` sobre las filas del año mezcla dos errores: promedia (en realidad suma) instrumentos sin ponderar por tamaño (idea 3) y suma días en vez de componerlos (idea 4). | 2º resultado del procedimiento | Portafolio 7, 2023: devuelve **+613,14 %** cuando lo correcto es **+5,33 %**. Suma 26.000 retornos (100 instrumentos × 260 días). |
-| C2 | **`RetornoMes` suma los retornos diarios** en vez de componerlos: `SUM(fn_PortfolioDailyReturn(...))`. | 1er resultado | Error pequeño en un mes con retornos chicos, pero crece con la volatilidad y el largo del periodo. Mismo error que [+10 %, −10 %] = 0 % en vez de −1 %. |
-| C3 | **División en `DECIMAL` que trunca la precisión.** `SUM(PnL) / SUM(MarketValueBegin)` divide dos `DECIMAL(38,4)`; SQL Server deja el resultado con **6 decimales**. Un retorno diario de 0,0123456 % (0,000123456) queda en 0,000123: se pierde todo lo que va después del cuarto decimal del porcentaje. | `fn_PortfolioDailyReturn` | En el mes 3 de 2023 el retorno queda en +0,9902 % contra +0,9938 % correcto. Se corrige dividiendo en `FLOAT`. |
+| C2 | **`RetornoMes` suma los retornos diarios** en vez de componerlos: `SUM(fn_PortfolioDailyReturn(...))`. | 1er resultado | Error pequeño en un mes con retornos chicos, pero crece con la volatilidad y el largo del periodo. Es el mismo error que dar 0 % para [+10 %, −10 %] en vez de −1 %. |
+| C3 | **División en `DECIMAL` que trunca la precisión.** `SUM(PnL) / SUM(MarketValueBegin)` divide dos `DECIMAL(38,4)`; SQL Server deja el resultado con **6 decimales**. Un retorno diario de 0,0123456 % (0,000123456) queda en 0,000123: se pierde todo lo que va después del cuarto decimal del porcentaje. | `fn_PortfolioDailyReturn` | Sumado a C2, marzo de 2023 queda en +0,9901 % contra +0,9938 % correcto. Se corrige dividiendo en `FLOAT`. |
 | C4 | **Sin protección ante división por cero o días sin datos.** Si `SUM(MarketValueBegin)` es 0, la función falla (error 8134) y tumba toda la consulta. | `fn_PortfolioDailyReturn` | Error en tiempo de ejecución. Se corrige devolviendo `NULL` y tratándolo como "sin retorno" ese día. |
 | C5 | **`LOG(1 + r)` no está definido si r ≤ −100 %.** No pasa con estos datos, pero es un caso que la solución nueva tiene que contemplar. | (solución nueva) | Se guarda `LogReturn = NULL` y el día no aporta al acumulado. |
 
@@ -101,7 +106,7 @@ Las funciones devuelven `SumLogReturn` y también `[Return]`. La API lee `SumLog
 
 ### Valores esperados (portafolio 7, corte 15-08-2023)
 
-Calculados con `scripts/valores_esperados.py`, que reproduce el generador de datos:
+Medidos en SQL Server después de las migraciones; coinciden con `scripts/valores_esperados.py`:
 
 | Periodo | Desde | Días | Retorno | P&L |
 |---|---|---|---|---|
@@ -116,21 +121,33 @@ Año 2023 completo, procedimiento original contra el corregido:
 |---|---|---|
 | RetornoYTD | +613,1420 % | **+5,3264 %** |
 | PnLYTD | $2.856.350,87 | $2.856.350,87 |
-| RetornoMes de marzo | +0,9902 % | **+0,9938 %** |
-| RetornoMes de diciembre | +1,2759 % | **+1,2819 %** |
+| RetornoMes de marzo | +0,9901 % | **+0,9938 %** |
+| RetornoMes de diciembre | +1,2753 % | **+1,2819 %** |
 
 ## 5. Medición después de los cambios
 
-| Consulta (portafolio 7) | Lecturas lógicas | Tiempo |
+Salida completa en `docs/mediciones/despues.txt`. Tiempos de ejecución (sin compilación), portafolio 7:
+
+| Consulta | Lecturas lógicas | Tiempo |
 |---|---|---|
-| (a) Resumen MTD/QTD/YTD/ITD | *Estimado: ~25 páginas* (4 periodos × 3 seeks × 2 niveles) | *Pendiente de medir* |
-| (b) Rango 01-03-2018 a 15-08-2023 | *Estimado: ~6 páginas* (3 seeks) | *Pendiente de medir* |
-| (c) Mensual 2015–2024 (120 meses) | *Estimado: ~30 páginas* (2.609 filas contiguas de ~90 bytes) | *Pendiente de medir* |
-| `usp_GetPerformance` nuevo (2023) | *Estimado: ~6 páginas* | *Pendiente de medir* |
+| (a) Resumen MTD/QTD/YTD/ITD al 15-08-2023 | 24 (`PortfolioDaily`) + 2 (`Portfolio`) | 26 ms la primera vez, **1 ms** después |
+| (b) Rango 01-03-2018 a 15-08-2023 | 9 | **< 1 ms** |
+| (c) Mensual 2015–2024 (120 meses) | 34 | **13 ms** |
+| `usp_GetPerformance` nuevo (2023) | 7 + 6 | **3 ms** |
 
-Con lecturas de ese orden, el objetivo de menos de 200 ms por consulta queda holgado: lo esperable es 1 ms o menos con caché caliente. La salida completa de `scripts/medir.sh despues` se guarda en `docs/mediciones/despues.txt`, e incluye un control que compara el YTD por acumulados contra la composición día a día y el P&L contra la tabla de hechos.
+Comparado con el procedimiento original (mismo portafolio y año):
 
-El costo se traslada a la carga: la carga inicial de `PortfolioDaily` agrega las 5,2 M de filas una vez (recorrido del índice 001), y cada refresco posterior toca solo un portafolio desde la fecha que cambió.
+| | Antes | Después | Mejora |
+|---|---|---|---|
+| Tiempo | 29,4 s (caliente) | 3 ms | ~10.000 veces |
+| Lecturas lógicas | ~16,35 millones | 13 | ~1 millón de veces |
+| RetornoYTD | +613,14 % (incorrecto) | +5,33 % | |
+
+Todas las consultas quedan muy por debajo del objetivo de 200 ms. La compilación de cada consulta la primera vez toma entre 5 y 20 ms, y después se reutiliza el plan. El mismo script incluye un control que confirma que el YTD por acumulados es igual a componer los retornos día a día (+5,3264 % en ambos) y que el P&L coincide con el de la tabla de hechos ($2.856.350,8692).
+
+Llamadas a la API medidas con `curl` contra la base real: entre 2 y 20 ms por respuesta, incluida la red local.
+
+El costo se traslada a la carga: aplicar las cinco migraciones, incluido crear el índice sobre 5,2 M de filas y la carga inicial de `PortfolioDaily`, tomó ~20 s en total. Cada refresco posterior toca solo un portafolio desde la fecha que cambió.
 
 ## 6. Cómo se mantienen al día las estructuras pre-calculadas
 
