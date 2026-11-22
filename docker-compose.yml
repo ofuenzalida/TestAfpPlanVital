@@ -30,5 +30,19 @@ services:
     entrypoint: ["/bin/bash", "/scripts/init.sh"]
     restart: "no"
 
+  # Aplica db/migrations/ (índices, tabla pre-agregada, consultas de la API).
+  # Para medir el "antes", levantar solo: docker compose up -d sqlserver db-init
+  db-migrate:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    depends_on:
+      db-init:
+        condition: service_completed_successfully
+    environment:
+      MSSQL_SA_PASSWORD: "${SA_PASSWORD:-FinPerf_Dev_2026!}"
+    volumes:
+      - ./db:/scripts:ro
+    entrypoint: ["/bin/bash", "/scripts/migrate.sh"]
+    restart: "no"
+
 volumes:
   sqldata:
